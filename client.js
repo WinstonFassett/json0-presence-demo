@@ -1,16 +1,12 @@
-const ShareDB = require('@teamwork/sharedb/lib/client');
+const ShareDBWithPresence = require('./lib/sharedb-presence/client')
+const presence = require('./lib/sharedb-presence/stateless')
 const HtmlTextCollabExt = require('@convergence/html-text-collab-ext');
 const StringBinding = require('sharedb-string-binding');
 const { hcl } = require('d3-color');
 
-// Use the json0 fork that implements presence.
-const json0 = require('@datavis-tech/ot-json0');
-ShareDB.types.register(json0.type);
-ShareDB.types.defaultType = json0.type;
-
 // Open WebSocket connection to ShareDB server
 const socket = new WebSocket('ws://' + window.location.host);
-const connection = new ShareDB.Connection(socket);
+const connection = new ShareDBWithPresence.Connection(socket, presence);
 
 // Sample user names for local testing.
 const names = ['Peter', 'Anna', 'John', 'Ole', 'Niels'];

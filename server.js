@@ -1,18 +1,14 @@
 const http = require('http');
 const express = require('express');
-const ShareDB = require('@teamwork/sharedb');
+const ShareDBWithPresence = require('./lib/sharedb-presence/server');
 const WebSocket = require('ws');
-const WebSocketJSONStream = require('@teamwork/websocket-json-stream');
+const WebSocketJSONStream = require('websocket-json-stream');
+const presence = require('./lib/sharedb-presence/stateless')
 
-// Use the json0 fork that implements presence.
-const json0 = require('@datavis-tech/ot-json0');
-ShareDB.types.register(json0.type);
-ShareDB.types.defaultType = json0.type;
-
-const backend = new ShareDB({
+const backend = new ShareDBWithPresence({
   disableDocAction: true,
   disableSpaceDelimitedActions: true
-});
+}, presence);
 createDoc(startServer);
 
 // Create initial document.
